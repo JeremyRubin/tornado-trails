@@ -55,8 +55,10 @@ class LoginHandler(BaseHandler):
 		user_response = yield tornado.gen.Wait("user")
 		if user_response[1]["error"]:
 			raise tornado.web.HTTPError(500)
-		user = user_response[0][0][0]
-
+		try:
+			user = user_response[0][0][0]
+		except IndexError:
+			self.redirect("/")
 		password = Password(password, salt=user["salt"])
 
 		self.db.passwords.find({"username":username},{"_id":0},limit=1,callback=(yield tornado.gen.Callback("password")))
