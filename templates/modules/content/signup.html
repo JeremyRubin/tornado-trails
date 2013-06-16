@@ -1,0 +1,25 @@
+<div class='container-fluid' id='main_content'>
+	<div class = 'row-fluid'>
+		<div class="span2 offset5">
+
+
+			<form action="/add/user" method="POST">
+				<legend>Join:</legend>
+				<label>Username:</label>
+				<input type="text" name="username" />
+				<label>Password:</label>
+				<input type="password" name="password" />
+				<label>Verify Password:</label>
+				<input type="password" name="verify_password" />
+				<br>
+				{% raw xsrf_form_html() %}
+				<button type="submit" class="btn">Sign Up!</button>
+			</form>
+			{#% if errors["signup"]%}
+			<div class="alert alert-error">
+				<strong>Warning!</strong> {{ errors["signup"] }}
+			</div>
+			{%end%#}
+		</div>
+	</div>
+</div>

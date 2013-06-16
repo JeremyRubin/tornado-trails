@@ -1,0 +1,33 @@
+<html>
+<head>
+	<title>This Site</title>
+
+    {#STYLESHEETS:#}
+	{% module Template("modules/loaders/cssloader.html")%}
+</head>
+
+<body>
+    {#MODALS:#}
+    {%module Template('modules/modals/sampleModal.html')%}
+
+    {#NAVBAR:#}
+
+    {% if not current_user %}
+    {%module Template('modules/navbars/navbarNoUser.html')%}
+    {%else%}
+    {%module Template('modules/navbars/navbar.html')%}
+    {%end%}
+    {#CONTENT:#}
+        {% if current_user%}
+    {%module Template('modules/content/main.html')%}
+    {% else %}
+    {%   module Template('modules/content/signup.html')%} 
+    {%end%}
+
+
+
+
+    {#SCRIPTS:#}
+    {% module Template("modules/loaders/scriptloader.html")%}
+</body>
+</html>
