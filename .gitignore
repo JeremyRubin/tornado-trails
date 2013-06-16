@@ -26,6 +26,7 @@ ompiled source #
 *.log
 *.sql
 *.sqlite
+nohup.out
 
 # OS generated files #
 ######################

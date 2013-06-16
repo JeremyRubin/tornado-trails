@@ -1,9 +1,10 @@
 #Import all main libs
 from Imports import *
 # Import all handlers
-from BaseHandler import BaseHandler
-from MainPage import MainPage
-from User import AddUserHandler, LoginHandler, LogoutHandler
+from handlers.BaseHandler import BaseHandler
+from handlers.MainPage import MainPage
+from handlers.User import AddUserHandler, LoginHandler, LogoutHandler
+
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [(r"/?", MainPage),
