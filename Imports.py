@@ -1,4 +1,7 @@
 #Put all imports here:
+#Config
+from config import config
+
 
 #System
 import sys

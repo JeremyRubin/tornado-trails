@@ -4,7 +4,7 @@ class BaseHandler(tornado.web.RequestHandler):
     @property
     def db(self):
         if not hasattr(self, '_db'):
-            self._db = asyncmongo.Client(pool_id='test_pool', host='127.0.0.1', port=27017, maxcached=10, maxconnections=50, dbname="app")
+            self._db = asyncmongo.Client(pool_id=config["db_pool"], host='127.0.0.1', port=27017, maxcached=10, maxconnections=50, dbname=config["db_name"])
         return self._db
     def date_handler(self, obj):
         if isinstance(obj, datetime.datetime):

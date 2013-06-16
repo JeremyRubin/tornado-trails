@@ -4,7 +4,6 @@ from Imports import *
 from BaseHandler import BaseHandler
 from MainPage import MainPage
 from User import AddUserHandler, LoginHandler, LogoutHandler
-NAME = "Application"
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [(r"/", MainPage),
@@ -13,7 +12,7 @@ class Application(tornado.web.Application):
                      (r"/add/user/?", AddUserHandler),
                      (r"/d/?", Debug),]
                     
-        settings = dict(cookie_secret="GENERATE YOUR OWN SECRET MORE SECURE THAN THIS",
+        settings = dict(cookie_secret=config["cookie_secret"],
                         login_url="/login",
                         template_path=os.path.join(os.path.dirname(__file__), "templates"),
                         static_path=os.path.join(os.path.dirname(__file__), "static"),
@@ -24,6 +23,8 @@ class Application(tornado.web.Application):
                         )
         tornado.web.Application.__init__(self, handlers, **settings)
 
+
+# Put Debug code here if need be
 class Debug(BaseHandler):
     @tornado.web.asynchronous
     @tornado.gen.engine

@@ -13,3 +13,6 @@ In effort to ease the developement on tornado, I am developing a standard model 
 To set this up, simply fill out the config.py file, then run $ python run.py
 
 For deployment, you **will** want to run it behind nginx. An example config is included.
+
+##Modification/Paradigm
+The design paradigm is pretty simple. Will add more documentation later.
