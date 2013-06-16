@@ -1,8 +1,6 @@
 #Put all imports here:
 #Config
 from config import config
-
-
 #System
 import sys
 sys.dont_write_bytecode = True # prevent .pyc

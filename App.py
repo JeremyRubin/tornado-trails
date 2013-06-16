@@ -6,20 +6,25 @@ from MainPage import MainPage
 from User import AddUserHandler, LoginHandler, LogoutHandler
 class Application(tornado.web.Application):
     def __init__(self):
-        handlers = [(r"/", MainPage),
+        handlers = [(r"/?", MainPage),
                     (r"/login/?", LoginHandler),
                     (r"/logout/?", LogoutHandler),
                      (r"/add/user/?", AddUserHandler),
-                     (r"/d/?", Debug),]
+                     ]
+        if config["devmode"]: handlers.append((r"/d/?", Debug))
+
+        if config["route_prefix"]:
+            handlers = [(config["route_prefix"]+route,handler) for route, handler in handlers]
                     
         settings = dict(cookie_secret=config["cookie_secret"],
                         login_url="/login",
                         template_path=os.path.join(os.path.dirname(__file__), "templates"),
-                        static_path=os.path.join(os.path.dirname(__file__), "static"),
+                        static_path=os.path.join(os.path.dirname(__file__), config["static_location"]),
                         xsrf_cookies=True,
-                        debug=True,
+                        debug=config["devmode"],
                         xheaders=True,
                         autoescape=None,
+                        gzip=True,
                         )
         tornado.web.Application.__init__(self, handlers, **settings)
 
