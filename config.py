@@ -1,3 +1,5 @@
+#Brought to you by Jeremy Rubin, 2013
+
 config = dict(
 			# your app's name
 			name="APP_NAME",

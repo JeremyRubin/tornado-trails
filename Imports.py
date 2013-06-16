@@ -1,3 +1,5 @@
+#Brought to you by Jeremy Rubin, 2013
+
 #Put all imports here:
 #Config
 from config import config

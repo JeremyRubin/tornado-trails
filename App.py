@@ -1,3 +1,5 @@
+#Brought to you by Jeremy Rubin, 2013
+
 #Import all main libs
 from Imports import *
 # Import all handlers

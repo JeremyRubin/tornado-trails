@@ -27,3 +27,5 @@ The design paradigm is pretty simple. Will add more documentation later, but it 
 
 ##Scaffolding
 If you take a look in the tools folder, I've started working on some scaffolding code which is pretty cool. Right now all it has is scaffolding for creating new modals or handlers, but I anticipate adding even more in the future. To see how these work, run them as `$ python New____.py -h`
+
+*Brought to you by Jeremy Rubin, 2013*

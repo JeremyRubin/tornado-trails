@@ -1,3 +1,5 @@
+#Brought to you by Jeremy Rubin, 2013
+
 import Tool
 import argparse
 

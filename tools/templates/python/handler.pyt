@@ -1,3 +1,5 @@
+#Brought to you by Jeremy Rubin, 2013
+
 from App import *
 class {{name}}({{parent}}):
 	def get(self):

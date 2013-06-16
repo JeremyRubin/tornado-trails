@@ -1,3 +1,4 @@
+#Brought to you by Jeremy Rubin, 2013
 from App import *
 class Password(object):
 	def __init__(self, password, salt=str(os.urandom(32).encode('hex'))):
