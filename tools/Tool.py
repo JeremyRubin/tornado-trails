@@ -4,11 +4,11 @@ import tornado.template
 import os
 class Tool(object):
 	def __init__(self, args):
-		self.args = args["args"]
+		self.args = args
 		self.type = args["type"]
 		self.path = os.path.dirname(os.path.realpath(__file__))
 		self.target = args['target']
-		self.name = args['args']['name']
+		self.name = args['name']
 		self.template = args['template']
 		self.templater()
 

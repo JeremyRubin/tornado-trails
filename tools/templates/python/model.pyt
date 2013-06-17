@@ -1,7 +1,6 @@
 #Brought to you by Jeremy Rubin, 2013
-
 from App import *
-class {{name}}Handler(BaseHandler):
+class {{name}}Model(BaseModel):
 	def get(self):
 		pass
 	def post(self):
