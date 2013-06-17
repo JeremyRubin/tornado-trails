@@ -1,5 +1,5 @@
 #Brought to you by Jeremy Rubin, 2013
-
+from models.{{name}}Model import {{name}}Model
 from App import *
 class {{name}}Handler(BaseHandler):
 	def get(self):

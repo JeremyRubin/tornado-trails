@@ -1,12 +1,15 @@
 #Brought to you by Jeremy Rubin, 2013
 from App import *
 class Password(object):
-	def __init__(self, password, salt=str(os.urandom(32).encode('hex'))):
+	def __init__(self, password, user=None, salt=str(os.urandom(32).encode('hex'))):
 		self.password = password
 		self.salt = salt
 		self.hashed = hashlib.sha512(password+salt).hexdigest()
+		self.passdict = {"username":user, "hashed":self.hashed}
 	def value(self):
 		return self.hashed
+	def same(self,other):
+		return self.password == other.password
 
 class AddUserHandler(BaseHandler):
 	def get(self):
@@ -15,31 +18,23 @@ class AddUserHandler(BaseHandler):
 	@tornado.gen.engine
 	def post(self):
 		username = self.get_argument("username")
-		password = Password(self.get_argument("password"))
+		password = Password(self.get_argument("password"),user=username)
+		verify_password = Password(self.get_argument("verify_password"))
+		if not password.same(verify_password):
+			raise tornado.web.HTTPError(500)
 
 		user = {"username":username, "salt":password.salt}
-
-		self.db.users.find(user, limit=1,callback=(yield tornado.gen.Callback("user")))
-		user_response = yield tornado.gen.Wait("user")
-
-		if user_response[1]["error"]:
-			raise tornado.web.HTTPError(500)
-		preexisting_user = user_response[0][0]
-		if preexisting_user:
+		use = {"username":username, "salt":password.salt}
+		
+		cursor = self.db.users.find(user).limit(1)
+		user_response = yield motor.Op(cursor.to_list)
+		if user_response:
 			raise tornado.web.HTTPError(500)
 
-
-		self.db.users.insert(user, callback=(yield tornado.gen.Callback("add_user")))
-		add_user_response = yield tornado.gen.Wait("add_user")
-		if add_user_response[1]["error"]:
-			raise tornado.web.HTTPError(500)
-
-		self.db.passwords.insert({"username":username, "hashed":password.hashed}, callback=(yield tornado.gen.Callback("add_hash")))
-		add_hash_response = yield tornado.gen.Wait("add_hash")
-		if add_hash_response[1]["error"]:
-			raise tornado.web.HTTPError(500)
-
-		self.set_secure_cookie('user',tornado.escape.json_encode(user))
+		user_success = yield motor.Op(self.db.users.insert, user)
+		password_success = yield motor.Op(self.db.passwords.insert,
+										  password.passdict)
+		self.set_secure_cookie('user',tornado.escape.json_encode(use))
 		self.redirect("/")
 			
 class LoginHandler(BaseHandler):
@@ -51,25 +46,17 @@ class LoginHandler(BaseHandler):
 		username = self.get_argument("username")
 		password = self.get_argument("password")
 
-		self.db.users.find({"username":username},{"_id":0},limit=1,callback=(yield tornado.gen.Callback("user")))
-		user_response = yield tornado.gen.Wait("user")
-		if user_response[1]["error"]:
-			raise tornado.web.HTTPError(500)
-		try:
-			user = user_response[0][0][0]
-		except IndexError:
-			self.redirect("/")
-		password = Password(password, salt=user["salt"])
+		cursor = self.db.users.find({"username":username},{"_id":0}).limit(1)
+		user = yield motor.Op(cursor.to_list)
+		if not user:
+			self.redirect("/login")
 
-		self.db.passwords.find({"username":username},{"_id":0},limit=1,callback=(yield tornado.gen.Callback("password")))
-		check_response = yield tornado.gen.Wait("password")
-		if check_response[1]["error"]:
-			raise tornado.web.HTTPError(500)
-		check = check_response[0][0][0]
+		password = Password(password, salt=user[0]["salt"])
 
-		print check
+		cursor = self.db.passwords.find({"username":username},{"_id":0}).limit(1)
+		passdict = yield motor.Op(cursor.to_list)
 
-		if check["hashed"] == password.hashed:
+		if passdict[0]["hashed"] == password.hashed:
 			self.set_secure_cookie('user',tornado.escape.json_encode(user))
 			self.redirect("/")
 		else:

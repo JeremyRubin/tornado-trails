@@ -1,5 +1,6 @@
 #Brought to you by Jeremy Rubin, 2013
-from App import *
+from Imports import *
+from handler.{{name}}Handler import {{name}}Handler
 class {{name}}Model(BaseModel):
 	def get(self):
 		pass

@@ -18,7 +18,9 @@ class Application(tornado.web.Application):
 
         if config["route_prefix"]:
             handlers = [(config["route_prefix"]+route,handler) for route, handler in handlers]
-                    
+
+        mongodb_uri = os.environ.get('MONGOLAB_URI', 'mongodb://localhost:27017')
+        _db = motor.MotorClient(mongodb_uri).open_sync()[config['db_name']]
         settings = dict(cookie_secret=config["cookie_secret"],
                         login_url="/login",
                         template_path=os.path.join(os.path.dirname(__file__), "templates"),
@@ -28,6 +30,7 @@ class Application(tornado.web.Application):
                         xheaders=True,
                         autoescape=None,
                         gzip=True,
+                        db=_db,
                         )
         tornado.web.Application.__init__(self, handlers, **settings)
 
@@ -37,7 +40,17 @@ class Debug(BaseHandler):
     @tornado.web.asynchronous
     @tornado.gen.engine
     def get(self):
-        self.db.users.find({}, callback=(yield tornado.gen.Callback("t")))
+            cursor = self.db.users.find({"dfadsc":'dfadsc'}).sort('_id').limit(2)
+   
+            response = yield motor.Op(cursor.to_list)
+
+      
+            print response
+            print "yes"
+            self.write("yes")
+            self.finish()
+    def crap():
+        self.db.users.find({}).to_list( callback=(yield tornado.gen.Callback("t")))
         respone = yield tornado.gen.Wait("t")
         print respone
         self.write("yes")

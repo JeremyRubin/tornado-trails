@@ -20,9 +20,10 @@ import tornado.gen
 from tornado.options import define, options
 
 #MongoDB
-import asyncmongo
 import pymongo
 from pymongo import MongoClient
+
+import motor #porting all code over to motor
 
 #Utilities
 import datetime
