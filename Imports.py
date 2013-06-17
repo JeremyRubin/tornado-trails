@@ -22,8 +22,7 @@ from tornado.options import define, options
 #MongoDB
 import pymongo
 from pymongo import MongoClient
-
-import motor #porting all code over to motor
+import motor
 
 #Utilities
 import datetime

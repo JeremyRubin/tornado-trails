@@ -1,7 +1,7 @@
 #Brought to you by Jeremy Rubin, 2013
 from App import *
 
-class BaseModel(tornado.web.RequestHandler): #find a better way to connect?
+class BaseModel(object,tornado.web.RequestHandler): #find a better way to connect?
     @property
     def db(self):
         if not hasattr(self, '_db'):
