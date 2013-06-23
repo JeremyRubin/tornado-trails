@@ -1,5 +1,6 @@
 #Brought to you by Jeremy Rubin, 2013
 from App import *
+from BaseHandler import BaseHandler
 class Password(object):
 	def __init__(self, password, user=None, salt=str(os.urandom(32).encode('hex'))):
 		self.password = password

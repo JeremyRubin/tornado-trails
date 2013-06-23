@@ -1,5 +1,5 @@
 #Brought to you by Jeremy Rubin, 2013
-from App import *
+
 
 class BaseModel(object,tornado.web.RequestHandler): #find a better way to connect?
     @property

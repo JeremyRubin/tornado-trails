@@ -1,19 +1,16 @@
-#Brought to you by Jeremy Rubin, 2013
-
-#Import all main libs
+# Brought to you by Jeremy Rubin, 2013
+# Import all main libs
 from Imports import *
-# Import all handlers
-from handlers.BaseHandler import BaseHandler
-from handlers.MainPage import MainPage
-from handlers.User import AddUserHandler, LoginHandler, LogoutHandler
+
+# Import all handlers/models
+from handlers_list import *
+# Import Routes
+
+import routes
 
 class Application(tornado.web.Application):
     def __init__(self):
-        handlers = [(r"/?", MainPage),
-                    (r"/login/?", LoginHandler),
-                    (r"/logout/?", LogoutHandler),
-                     (r"/add/user/?", AddUserHandler),
-                     ]
+        handlers = routes.handlers
         if config["devmode"]: handlers.append((r"/d/?", Debug))
 
         if config["route_prefix"]:
